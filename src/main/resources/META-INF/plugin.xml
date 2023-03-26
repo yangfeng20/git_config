@@ -1,0 +1,37 @@
+<idea-plugin>
+    <id>com.maple.git_config</id>
+    <name>Git Config</name>
+    <vendor email="maple_yang_20@qq.com" url="https://github.com/yangfeng20/get_config">maple</vendor>
+
+    <description><![CDATA[
+    manager your project git config file
+    管理你项目的git配置文件
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+    <idea-version since-build="203.0" until-build="223.*"/>
+
+    <change-notes><![CDATA[
+    <h2>Version 1.0.0</h2>
+    <ul>
+        <li>管理你的项目git配置</li>
+    </ul>
+]]></change-notes>
+
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <applicationListeners>
+        <listener class="com.maple.git.config.listener.VcsCloneListener"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </applicationListeners>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>
