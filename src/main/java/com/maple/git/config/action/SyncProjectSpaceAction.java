@@ -3,6 +3,7 @@ package com.maple.git.config.action;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
+import com.maple.git.config.notify.Notifier;
 import com.maple.git.config.project.space.AbsProjectSpaces;
 import com.maple.git.config.project.space.AccountProjectSpaces;
 import com.maple.git.config.project.space.DefaultProjectSpace;
@@ -35,6 +36,7 @@ public class SyncProjectSpaceAction extends AnAction {
         String projectSpacePathStr = projectSpacePath.toString();
 
         if (AbsProjectSpaces.notProjectSpace(projectSpacePathStr)) {
+            Notifier.notifyInfo("The current project is not under project space", project);
             return;
         }
 

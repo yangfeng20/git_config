@@ -167,9 +167,9 @@ public abstract class AbsProjectSpaces {
         Task.Backgroundable taskIndicator = new Task.Backgroundable(ideaProject, "SyncSpaceConfig") {
             @Override
             public void run(@NotNull ProgressIndicator indicator) {
-                for (int i = 0; i < taskList.size(); i++) {
-                    taskList.get(++i).run();
-                    indicator.setFraction((double) i / taskList.size());
+                for (int i = 0; i < taskList.size();) {
+                    taskList.get(i).run();
+                    indicator.setFraction((double) ++i / taskList.size());
                 }
             }
 

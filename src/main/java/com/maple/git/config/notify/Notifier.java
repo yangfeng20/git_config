@@ -22,7 +22,7 @@ public class Notifier {
     }
 
     public static void notify(String content, NotificationType type, Project project) {
-        NotificationGroup notificationGroup = getNotificationGroup("ba");
+        NotificationGroup notificationGroup = getNotificationGroup("syncProjectGitConfig");
         notificationGroup.createNotification(content, type)
                 .notify(project);
     }
