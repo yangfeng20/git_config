@@ -1,14 +1,13 @@
 package com.maple.git.config.project.space;
 
 import com.maple.git.config.entity.GitConfig;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author yangfeng
@@ -34,6 +33,16 @@ public abstract class AbsProjectSpaces {
         File projectSpaceConfigFile = new File(projectSpaceConfigPath);
 
         return projectSpaceConfigFile.isDirectory() || projectSpaceConfigFile.isFile();
+    }
+
+    /**
+     * 不是项目空间
+     *
+     * @param path 路径
+     * @return boolean
+     */
+    public static boolean notProjectSpace(String path) {
+        return !hasProjectSpace(path);
     }
 
     /**
@@ -64,7 +73,7 @@ public abstract class AbsProjectSpaces {
 
     public GitConfig readGitConfig(String gitConfigPath) {
 
-        List<String> readAllLineList = Collections.emptyList();
+        List<String> readAllLineList;
         try {
             readAllLineList = Files.readAllLines(Paths.get(gitConfigPath));
         } catch (IOException e) {
@@ -113,5 +122,40 @@ public abstract class AbsProjectSpaces {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void syncProjectSpaceAllProjectConfig(@NotNull ProjectSpace space) {
+        String projectSpacePath = space.getProjectSpacePath();
+        File[] fileArr = new File(projectSpacePath).listFiles();
+        for (File projectFile : fileArr) {
+            // 项目文件夹中有.git文件夹并且其中有config文件
+            boolean isProject = Optional.of(projectFile)
+                    .filter(File::exists)
+                    .filter(File::isDirectory)
+                    .flatMap(
+                            dir -> Optional.of(new File(dir, ".git"))
+                                    .filter(File::exists)
+                                    .filter(File::isDirectory)
+                                    .flatMap(
+                                            gitDir -> Optional.of(new File(gitDir, "config"))
+                                                    .filter(File::exists)
+                                                    .filter(f -> !f.isDirectory())
+                                    )
+                    )
+                    .isPresent();
+            // 不是git项目，没有配置文件，无需同步
+            if (!isProject) {
+                continue;
+            }
+            GitProject gitProject = new DefaultGitProject(projectFile.getAbsolutePath());
+            // 是否和项目空间配置相同
+            if (this.equalsProjectSpaceConfig(space, gitProject)) {
+                continue;
+            }
+
+            // 同步当前项目
+            syncProjectSpaceConfig(space, gitProject);
+        }
+
     }
 }

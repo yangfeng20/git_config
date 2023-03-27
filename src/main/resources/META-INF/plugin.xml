@@ -40,11 +40,19 @@
     </applicationListeners>
 
     <actions>
-        <!-- Add your actions here -->
-        <!-- Add your actions here -->
-        <action id="toStruct" class="com.maple.git.config.action.SyncProjectSpaceAction" text="SyncProjectSpaceConfig"
+
+        <!--gitConfig配置组-->
+        <group id="GitConfig.MainMenu" popup="true" text="GitConfig">
+            <reference ref="GitConfig.syncProjectSpaceConfig"/>
+            <!--挂载在Git菜单下-->
+            <add-to-group group-id="Git.MainMenu" relative-to-action="Git.Configure.Remotes" anchor="before"/>
+        </group>
+
+        <action id="GitConfig.syncProjectSpaceConfig" class="com.maple.git.config.action.SyncProjectSpaceAction"
+                text="Sync Space Config"
                 description="同步项目空间配置">
-            <add-to-group group-id="Git.MainMenu" anchor="last"/>
+            <add-to-group group-id="GitConfig.MainMenu" anchor="last"/>
         </action>
+
     </actions>
 </idea-plugin>

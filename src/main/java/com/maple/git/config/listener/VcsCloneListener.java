@@ -37,7 +37,7 @@ public class VcsCloneListener implements ProjectManagerListener {
         Path projectSpacePath = Paths.get(projectPath).getParent();
         String projectSpacePathStr = projectSpacePath.toString();
 
-        if (!AbsProjectSpaces.hasProjectSpace(projectSpacePathStr)) {
+        if (AbsProjectSpaces.notProjectSpace(projectSpacePathStr)) {
             return;
         }
 
