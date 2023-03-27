@@ -4,8 +4,62 @@
     <vendor email="maple_yang_20@qq.com" url="https://github.com/yangfeng20/get_config">maple</vendor>
 
     <description><![CDATA[
-    manager your project git config file
-    管理你项目的git配置文件
+<h2 id="en">En</h2>
+<p>Manager your project git config file.</p>
+<p>Use the same configuration for all items in the same folder.</p>
+<p>This folder is called Project Space.</p>
+<h3 id="precondition">Precondition</h3>
+<ol>
+<li><p>You need to use the same configuration of these items in the same folder.</p>
+</li>
+<li><p>There should be a &#39;.gitConfig &#39;file in the same class as these projects. The structure and files are as follows</p>
+<ul>
+<li><p>--ProjectSpace</p>
+<ul>
+<li><p>--project01</p>
+</li>
+<li><p>--project02</p>
+</li>
+<li><p>--.gitConfig</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="use">Use</h3>
+<ol>
+<li>Synchronize the project space configuration to the current project. When the project is opened, check whether it is consistent with the project space configuration. If it is inconsistent, prompt synchronization.</li>
+<li>Synchronize all projects in the project space. Follow these steps:<ul>
+<li>Git --&gt; GitConfig --&gt; Sync Space Config</li>
+</ul>
+</li>
+</ol>
+<h2 id="cn">Cn</h2>
+<p>管理你项目的git配置文件
+同一个文件夹下的所有项目，使用同一份配置。
+这个文件夹称为项目空间。</p>
+<h3 id="-">前置条件：</h3>
+<ol>
+<li>你需要使用同一份配置的这些项目在同一个文件夹下。</li>
+<li>和这些项目同级应该有<code>.gitConfig</code>文件。结构和文件如下<ul>
+<li>--ProjectSpace<ul>
+<li>--project01</li>
+<li>--project02</li>
+<li>--.gitConfig</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="-">使用</h3>
+<ol>
+<li>同步项目空间配置到当前项目。项目打开时自己检查是否和项目空间配置一致，不一致提示同步。</li>
+<li>同步项目空间下的所有项目。按照以下步骤：<ul>
+<li>Git --&gt; GitConfig --&gt; Sync Space Config</li>
+</ul>
+</li>
+</ol>
     ]]></description>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
@@ -17,7 +71,8 @@
     <change-notes><![CDATA[
     <h2>Version 1.0.0</h2>
     <ul>
-        <li>管理你的项目git配置</li>
+        <li>1.sync project space all config</li>
+        <li>2.sync current project config</li>
     </ul>
 ]]></change-notes>
 
