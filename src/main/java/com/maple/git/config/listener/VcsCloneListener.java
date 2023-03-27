@@ -1,5 +1,6 @@
 package com.maple.git.config.listener;
 
+import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManagerListener;
 import com.intellij.openapi.project.ProjectUtil;
@@ -18,8 +19,12 @@ import java.util.Objects;
 
 /**
  * @author maple
+ * 版本控制系统克隆监听器
  */
 public class VcsCloneListener implements ProjectManagerListener {
+
+    private final static String NOT_SHOW_KEY = "NoLongerShow";
+
     @Override
     public void projectOpened(@NotNull Project project) {
         VirtualFile virtualFile = ProjectUtil.guessProjectDir(project);
@@ -27,8 +32,9 @@ public class VcsCloneListener implements ProjectManagerListener {
             return;
         }
 
-        // 获取项目工具空间路径
-        Path projectSpacePath = Paths.get(virtualFile.getPath()).getParent();
+        // 获取项目空间路径
+        String projectPath = virtualFile.getPath();
+        Path projectSpacePath = Paths.get(projectPath).getParent();
         String projectSpacePathStr = projectSpacePath.toString();
 
         if (!AbsProjectSpaces.hasProjectSpace(projectSpacePathStr)) {
@@ -36,7 +42,7 @@ public class VcsCloneListener implements ProjectManagerListener {
         }
 
         DefaultProjectSpace projectSpace = new DefaultProjectSpace(projectSpacePathStr);
-        DefaultGitProject gitProject = new DefaultGitProject(virtualFile.getPath());
+        DefaultGitProject gitProject = new DefaultGitProject(projectPath);
 
         // 项目配置和项目空间配置相同
         AbsProjectSpaces projectSpaces = new AccountProjectSpaces();
@@ -44,17 +50,21 @@ public class VcsCloneListener implements ProjectManagerListener {
             return;
         }
 
+        // 不再显示
+        if (PropertiesComponent.getInstance().getBoolean(projectPath + NOT_SHOW_KEY)) {
+            return;
+        }
+
         // 通知提示是否同步配置
         SyncNotification syncNotification = new SyncNotification("GitConfig", "sync project space git config", "syncProjectGitConfig");
         syncNotification.addAction(new LinkNotificationAction("sync", (event, notification) -> {
-            System.out.println(event);
             // 同步项目空间的配置到当前项目
             projectSpaces.syncProjectSpaceConfig(projectSpace, gitProject);
 
         }));
+
         syncNotification.addAction(new LinkNotificationAction("No longer show", (event, notification) -> {
-            // todo 不再提示逻辑
-            System.out.println(event);
+            PropertiesComponent.getInstance().setValue(projectPath + NOT_SHOW_KEY, Boolean.TRUE);
         }));
 
         syncNotification.end().showNotification(project);
