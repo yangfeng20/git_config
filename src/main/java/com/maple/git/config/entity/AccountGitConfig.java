@@ -40,7 +40,7 @@ public class AccountGitConfig implements GitConfig {
 
     @Override
     public String toConfigText() {
-        return TITLE + "\n\tname=" + userName + "\temail" + userEmail;
+        return TITLE + "\n\tname = " + userName + "\n\temail = " + userEmail;
     }
 
     @Override

@@ -12,7 +12,7 @@
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.java</depends>
-    <idea-version since-build="203.0" until-build="223.*"/>
+    <idea-version since-build="203.5981.155" until-build="223.*"/>
 
     <change-notes><![CDATA[
     <h2>Version 1.0.0</h2>
@@ -24,6 +24,14 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+
+        <notificationGroup id="syncProjectGitConfig"
+                           displayType="BALLOON"
+                           toolWindowId="Event Log"/>
+
+        <notificationGroup id="myPluginNotification"
+                           displayType="BALLOON"/>
+
     </extensions>
 
     <applicationListeners>
@@ -33,5 +41,10 @@
 
     <actions>
         <!-- Add your actions here -->
+        <!-- Add your actions here -->
+        <action id="toStruct" class="com.maple.git.config.action.SyncProjectSpaceAction" text="SyncProjectSpaceConfig"
+                description="同步项目空间配置">
+            <add-to-group group-id="Git.MainMenu" anchor="last"/>
+        </action>
     </actions>
 </idea-plugin>

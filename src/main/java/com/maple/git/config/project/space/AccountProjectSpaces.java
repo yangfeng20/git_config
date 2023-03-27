@@ -49,7 +49,7 @@ public class AccountProjectSpaces extends AbsProjectSpaces {
 
     private AccountGitConfig buildField(Map<String, String> userData) {
         AccountGitConfig accountGitConfig = new AccountGitConfig();
-        accountGitConfig.setUserName(userData.get("user"));
+        accountGitConfig.setUserName(userData.get("name"));
         accountGitConfig.setUserEmail(userData.get("email"));
         return accountGitConfig;
     }

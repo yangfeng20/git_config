@@ -20,7 +20,7 @@ public abstract class AbsProjectSpaces {
 
     private static final String LINE_BREAK = "\n";
     private static final String PROJECT_SPACE_GIT_CONFIG_PATH = ".gitConfig";
-    private static final String PROJECT_GIT_CONFIG_PATH = ".git" + File.pathSeparator + "config";
+    private static final String PROJECT_GIT_CONFIG_PATH = ".git" + File.separator + "config";
 
 
     /**
@@ -30,7 +30,7 @@ public abstract class AbsProjectSpaces {
      * @return boolean
      */
     public static boolean hasProjectSpace(String path) {
-        String projectSpaceConfigPath = path + File.pathSeparator + PROJECT_SPACE_GIT_CONFIG_PATH;
+        String projectSpaceConfigPath = path + File.separator + PROJECT_SPACE_GIT_CONFIG_PATH;
         File projectSpaceConfigFile = new File(projectSpaceConfigPath);
 
         return projectSpaceConfigFile.isDirectory() || projectSpaceConfigFile.isFile();
@@ -43,7 +43,7 @@ public abstract class AbsProjectSpaces {
      * @return {@link String}
      */
     public static String getProjectSpaceConfigPath(ProjectSpace projectSpace) {
-        return projectSpace.getProjectSpacePath() + PROJECT_SPACE_GIT_CONFIG_PATH;
+        return projectSpace.getProjectSpacePath() + File.separator + PROJECT_SPACE_GIT_CONFIG_PATH;
     }
 
     /**
@@ -53,7 +53,7 @@ public abstract class AbsProjectSpaces {
      * @return {@link String}
      */
     public static String getProjectConfigPath(GitProject gitProject) {
-        return gitProject.getProjectConfig() + PROJECT_GIT_CONFIG_PATH;
+        return gitProject.getProjectPath() + File.separator + PROJECT_GIT_CONFIG_PATH;
     }
 
     public boolean equalsProjectSpaceConfig(ProjectSpace space, GitProject project) {
@@ -77,6 +77,7 @@ public abstract class AbsProjectSpaces {
     }
 
     private String readConfigText(String gitConfigPath) {
+        // todo 符号丢失问题
         try {
             return String.join("", Files.readAllLines(Paths.get(gitConfigPath)));
         } catch (IOException e) {
@@ -103,7 +104,7 @@ public abstract class AbsProjectSpaces {
         String oldProjectConfig = readConfigText(getProjectConfigPath(project));
         GitConfig gitConfig = readGitConfig(getProjectSpaceConfigPath(space));
 
-        if (oldProjectConfig.endsWith(LINE_BREAK)) {
+        if (!oldProjectConfig.endsWith(LINE_BREAK)) {
             oldProjectConfig += LINE_BREAK;
         }
         String newProjectConfig = oldProjectConfig + gitConfig.toConfigText();

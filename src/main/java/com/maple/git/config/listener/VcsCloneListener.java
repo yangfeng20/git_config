@@ -4,10 +4,12 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManagerListener;
 import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.maple.git.config.notify.LinkNotificationAction;
+import com.maple.git.config.notify.SyncNotification;
+import com.maple.git.config.project.space.AbsProjectSpaces;
 import com.maple.git.config.project.space.AccountProjectSpaces;
 import com.maple.git.config.project.space.DefaultGitProject;
 import com.maple.git.config.project.space.DefaultProjectSpace;
-import com.maple.git.config.project.space.AbsProjectSpaces;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
@@ -42,9 +44,18 @@ public class VcsCloneListener implements ProjectManagerListener {
             return;
         }
 
-        // todo 提示是否同步项目[提示弹框]；同步所有项目是，遍历项目空间下的所有项目。
+        // 通知提示是否同步配置
+        SyncNotification syncNotification = new SyncNotification("GitConfig", "sync project space git config", "syncProjectGitConfig");
+        syncNotification.addAction(new LinkNotificationAction("sync", (event, notification) -> {
+            System.out.println(event);
+            // 同步项目空间的配置到当前项目
+            projectSpaces.syncProjectSpaceConfig(projectSpace, gitProject);
 
-        // 同步项目空间的配置到当前项目
-        projectSpaces.syncProjectSpaceConfig(projectSpace, gitProject);
+        }));
+        syncNotification.addAction(new LinkNotificationAction("No longer show", (event, notification) -> {
+            System.out.println(event);
+        }));
+
+        syncNotification.end().showNotification(project);
     }
 }
