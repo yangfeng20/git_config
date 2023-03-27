@@ -77,9 +77,8 @@ public abstract class AbsProjectSpaces {
     }
 
     private String readConfigText(String gitConfigPath) {
-        // todo 符号丢失问题
         try {
-            return String.join("", Files.readAllLines(Paths.get(gitConfigPath)));
+            return String.join("\n", Files.readAllLines(Paths.get(gitConfigPath)));
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("无法获取git配置文件");

@@ -53,6 +53,7 @@ public class VcsCloneListener implements ProjectManagerListener {
 
         }));
         syncNotification.addAction(new LinkNotificationAction("No longer show", (event, notification) -> {
+            // todo 不再提示逻辑
             System.out.println(event);
         }));
 
