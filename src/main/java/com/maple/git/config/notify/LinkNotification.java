@@ -2,8 +2,6 @@ package com.maple.git.config.notify;
 
 import com.intellij.notification.*;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonShortcuts;
-import com.intellij.openapi.actionSystem.ShortcutSet;
 import com.intellij.openapi.project.Project;
 import org.apache.commons.collections.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.event.HyperlinkEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 /**
  * @author yangfeng

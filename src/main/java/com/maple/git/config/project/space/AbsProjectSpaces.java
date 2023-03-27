@@ -1,6 +1,11 @@
 package com.maple.git.config.project.space;
 
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
+import com.intellij.openapi.project.Project;
 import com.maple.git.config.entity.GitConfig;
+import com.maple.git.config.notify.Notifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -124,9 +129,10 @@ public abstract class AbsProjectSpaces {
         }
     }
 
-    public void syncProjectSpaceAllProjectConfig(@NotNull ProjectSpace space) {
+    public void syncProjectSpaceAllProjectConfig(@NotNull ProjectSpace space, Project ideaProject) {
         String projectSpacePath = space.getProjectSpacePath();
         File[] fileArr = new File(projectSpacePath).listFiles();
+        List<Runnable> taskList = new ArrayList<>();
         for (File projectFile : fileArr) {
             // 项目文件夹中有.git文件夹并且其中有config文件
             boolean isProject = Optional.of(projectFile)
@@ -154,8 +160,25 @@ public abstract class AbsProjectSpaces {
             }
 
             // 同步当前项目
-            syncProjectSpaceConfig(space, gitProject);
+            taskList.add(() -> syncProjectSpaceConfig(space, gitProject));
+
         }
+
+        Task.Backgroundable taskIndicator = new Task.Backgroundable(ideaProject, "SyncSpaceConfig") {
+            @Override
+            public void run(@NotNull ProgressIndicator indicator) {
+                for (int i = 0; i < taskList.size(); i++) {
+                    taskList.get(++i).run();
+                    indicator.setFraction((double) i / taskList.size());
+                }
+            }
+
+            @Override
+            public void onFinished() {
+                Notifier.notifyInfo("git config sync finish", ideaProject);
+            }
+        };
+        ProgressManager.getInstance().run(taskIndicator);
 
     }
 }

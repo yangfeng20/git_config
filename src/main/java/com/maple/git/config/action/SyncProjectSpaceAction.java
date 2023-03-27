@@ -41,6 +41,6 @@ public class SyncProjectSpaceAction extends AnAction {
         // 同步项目空间下所有项目的配置
         DefaultProjectSpace projectSpace = new DefaultProjectSpace(projectSpacePathStr);
         AbsProjectSpaces projectSpaces = new AccountProjectSpaces();
-        projectSpaces.syncProjectSpaceAllProjectConfig(projectSpace);
+        projectSpaces.syncProjectSpaceAllProjectConfig(projectSpace, project);
     }
 }

@@ -63,9 +63,8 @@ public class VcsCloneListener implements ProjectManagerListener {
 
         }));
 
-        syncNotification.addAction(new LinkNotificationAction("No longer show", (event, notification) -> {
-            PropertiesComponent.getInstance().setValue(projectPath + NOT_SHOW_KEY, Boolean.TRUE);
-        }));
+        syncNotification.addAction(new LinkNotificationAction("No longer show", (event, notification) ->
+                PropertiesComponent.getInstance().setValue(projectPath + NOT_SHOW_KEY, Boolean.TRUE)));
 
         syncNotification.end().showNotification(project);
     }
